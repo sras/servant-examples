@@ -6,10 +6,17 @@
 
 module UrlParams where
 
-import Servant
-import Servant.Server
-import Network.Wai.Handler.Warp
-import Control.Monad.IO.Class
+import Servant ( QueryParam
+               , PlainText
+               , Get
+               , Proxy(..)
+               , type (:>)      -- Syntax for importing type operator
+               , type (:<|>)
+               , (:<|>)(..)
+               )
+import Servant.Server (Handler, Server, Application, serve)
+import Network.Wai.Handler.Warp (run)
+import Control.Monad.IO.Class (liftIO)
 
 -- In this example we look at how
 -- we can recieve parameters via 
@@ -18,7 +25,9 @@ import Control.Monad.IO.Class
 -- as a url parameter
 
 -- Right below is our handler for the route
+--
 -- `/name?input=<input-name>`
+--
 -- The type of this route is `"name" :> QueryParam "input" String :> Get '[PlainText] String`
 -- The QueryParam segment declares the argument we expect in the url
 -- `QueryParam "input" String` means we expect a value in "input" key
@@ -34,7 +43,7 @@ handlerName nameIn = case nameIn of
   Nothing -> return "Anonymous"
 
 handlerAge :: Handler String
-handlerAge = liftIO $ return "30"
+handlerAge = return "30"
 
 type ServantType =  "name" :> QueryParam "input" String :> Get '[PlainText] String
                :<|> "age" :> Get '[PlainText] String

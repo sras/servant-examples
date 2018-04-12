@@ -7,48 +7,48 @@
 
 module HtmlContent where
 
-import Servant
-import Servant.Server
-import Network.Wai.Handler.Warp
-import Control.Monad.IO.Class
-
+import Servant ( QueryParam
+               , PlainText
+               , Get
+               , Proxy(..)
+               , type (:>)      -- Syntax for importing type operator
+               , type (:<|>)
+               , (:<|>)(..)
+               , Accept(..)
+               , MimeRender(..)
+               )
+import Servant.Server (Handler, Server, Application, serve)
+import Network.Wai.Handler.Warp (run)
+import Control.Monad.IO.Class (liftIO)
 import Data.ByteString.Lazy.Char8 as C
+
+-- In this example, we add an Html type and make endpoints
+-- with this content type return a content type header with
+-- "text/html" in it.
+
+data HTML -- Here is our HTML type that we will use in the type of the endpoint.
+          -- We don't need a constructor here since we ll ever have to deal with a value of this type.
+
+instance Accept HTML where         -- This instance is what makes the endpoints with this content type
+   contentType _ = "text/html"     -- return content with a content type header with "text/html" in it.
+
+instance MimeRender HTML String  where  -- This instance where we define how a value of type string is
+   mimeRender _ val = C.pack val        -- is encoded as an html value. Note that we are not converting
+                                        -- the string to an value of type HTML, but just to a Bytestring that
+                                        -- represents the HTML encoding. As I said earlier, we won't ever
+                                        -- have to deal with a value of type HTML
+
+instance MimeRender HTML Int  where        -- Same as before. This instance defines how an Int will be converted
+   mimeRender _ val = C.pack $ show $ val  -- to a bytestring for endpoints with HTML content type.
+
+type ServantType =  "name" :> Get '[HTML] String
+               :<|> "age" :> Get '[HTML] Int
 
 handlerName :: Handler String
 handlerName = return "sras"
 
 handlerAge :: Handler Int
-handlerAge = liftIO $ return 30
-
-data HTML 
--- This is our type to represent Html content. No constructor
--- is required because we wont be creating value of this type
-
--- The following instance is what required
--- to make the HTML type appear in place of
--- content type in Servant urls.
-instance Accept HTML where
-   contentType _ = "text/html" 
-
--- The below instance enables endpoints
--- with HTML content type to be handled
--- by handlers that return a String. The
--- next instnace enables them to be handled
--- by handlers that return an Int.
-
-instance MimeRender HTML String  where 
-   mimeRender _ val = C.pack val
-
-instance MimeRender HTML Int  where 
-   mimeRender _ val = C.pack $ show $ val
-
--- The above instance enables endpoints
--- with HTML content type to be handled
--- by handlers that return an Int
---
-
-type ServantType =  "name" :> Get '[HTML] String
-               :<|> "age" :> Get '[HTML] Int
+handlerAge = return 30
 
 server :: Server ServantType
 server = handlerName :<|> handlerAge

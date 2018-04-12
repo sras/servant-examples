@@ -6,10 +6,17 @@
 
 module HelloWorld where
 
-import Servant
-import Servant.Server
-import Network.Wai.Handler.Warp
-import Control.Monad.IO.Class
+import Servant ( QueryParam
+               , PlainText
+               , Get
+               , Proxy(..)
+               , type (:>)      -- Syntax for importing type operator
+               , type (:<|>)
+               , (:<|>)(..)
+               )
+import Servant.Server (Handler, Server, Application, serve)
+import Network.Wai.Handler.Warp (run)
+import Control.Monad.IO.Class (liftIO)
 
 -- "Hello world" of servant web application
 -- In this we will create a web application with 
@@ -18,50 +25,69 @@ import Control.Monad.IO.Class
 -- /name, which return a hard coded name
 -- /age, which returns a hard coded age
 
+-- 
+-- The two functions that are supposed to 
+-- handle these two endpoints can be seen below.
+--
 handlerName :: Handler String
 handlerName = return "sras"
 
 handlerAge :: Handler String
-handlerAge = liftIO $ return "30"
+handlerAge = liftIO $ (return "30" :: IO String) -- Using liftIO just to show that we can do arbitrary IO in the Handler
 
--- 
--- The two functions that are supposed to 
--- handle these two endpoints can be seen above.
--- The handler functions should run in a 'Handler'
+-- The handler functions for Servant should run in a 'Handler'
 -- monad, which is something that is part of the Servant
 -- This monad is an instance of MonadIO class, so you 
--- can do arbitrary IO in your handlers and can just liftIO
--- the whole thing into the Handler monad. You can see this
--- done in the 'age' handler.
+-- can do arbitrary IO in your handlers. You can see this
+-- done in the 'age' handler, where we lift a value of type
+-- 'IO String' to a value of type 'Handler String'
 
-
-type ServantType =  "name" :> Get '[PlainText] String
-               :<|> "age" :> Get '[PlainText] String
+type ServantType =  "person" :> "name" :> Get '[PlainText] String
+               :<|> "person" :> "age" :> Get '[PlainText] String
 
 -- Now we come to the most unique feature of servant
--- which is, the type of the webapplication
--- The rhs of the line above is a type, that is made
--- by joining types *representing* the indvidual handlers.
--- so `"name" :> Get '[PlainText] String` is the type
--- component that represent the first route that returns
--- the name, and `"age" :> Get '[PlainText] String` is
--- the second one, and both are combined using the `:<|>`
--- operator.
+-- which is, the webapplication represented as a type.
+-- Each endpoint have its own type, and these types are
+-- joined by the :<|> type operator, which ends up being
+-- the type of the server that contains all the constituent
+-- endpoints.
 --
--- The actual urls for the above end up being "/name" and "/age".
--- if we wanted our name endpoint to show up at url
--- "/my/name" the type shoud be 
+-- Let us start with a simple endpoint. Say we want this
+-- endpoint to be avilable at url "/person/name" using GET method.
+-- And say, we want this to return a plain text content to the browser.
 --
--- "my" :> "name" :> Get '[PlainText] String
+-- The type of this endpoint can be
 --
--- NOTE: If you are thinking why this example
--- shows PlainText, instead of some Html representation
--- that is because Servant does not come with its own
--- html representation out of the box
+-- "person" :> "name" :> Get '[PlainText] String
 --
--- https://hackage.haskell.org/package/servant-0.12/docs/Servant-API-ContentTypes.html#t:MimeRender
+-- Note that we had to separate the path segments using the :> operator
+-- and it wouldn't work if we specify the path 
+-- as "person/name" :> Get '[PlainText] String
 --
--- The provided content types are JSON, PlainText, FormUrlEncoded and OctetStream
+-- Next is the 'Get' part, which decides the HTTP Method
+-- by which this endpoint can be accessed. Servant provides
+-- the following methods
+--
+--   GET
+--   POST
+--   HEAD
+--   PUT
+--   DELETE
+--   TRACE
+--   CONNECT
+--   OPTIONS
+--   PATCH
+-- 
+-- After the Method, we have this type level list
+-- '[PlainText]. This configures the type of formats
+-- that this endpoint could return. Right now we have
+-- only PlainText in this list. So this endpoint can 
+-- only output stuff in plain text format. The content
+-- type header will contain "text/plain".
+--
+-- The available formats bundled with Servant are
+-- PlainText, FormUrlEncoded, OctetStream and JSON
+--
 -- We will see how to add an Html type in the next example
 
 server :: Server ServantType
@@ -71,16 +97,16 @@ server = handlerName :<|> handlerAge
 -- (just like we combined the types representing
 -- handlers in the step before). Here too we
 -- can use the :<|> operator to combine handlers.
--- Only here this is a regular operator, while
--- where we combined types, it was a type operator.
-
+-- Only here this is a regular operator, that
+-- operate of values.
+--
 app :: Application
 app = serve (Proxy :: Proxy ServantType) server
 
 -- Here we make a regular wai application
 -- from the servants representation of the
 -- web app. If you are not familar with the `Proxy` stuff
--- it is something that is part of Data.Proxy module, and
+-- It is something that is part of Data.Proxy module, and
 -- is something that is commonly used in fancy typelevel
 -- stuff.
 --
@@ -93,7 +119,7 @@ mainFn = run 4000 app
 
 -- Now let us see how this app behaves
 --
--- curl -v 127.0.0.1:4000/age
+-- curl -v 127.0.0.1:4000/person/age
 -- *   Trying 127.0.0.1...
 -- * Connected to 127.0.0.1 (127.0.0.1) port 4000 (#0)
 -- > GET /age HTTP/1.1
@@ -110,7 +136,7 @@ mainFn = run 4000 app
 -- * Connection #0 to host 127.0.0.1 left intact
 -- 30
 --
--- curl -v 127.0.0.1:4000/name
+-- curl -v 127.0.0.1:4000/person/name
 -- *   Trying 127.0.0.1...
 -- * Connected to 127.0.0.1 (127.0.0.1) port 4000 (#0)
 -- > GET /name HTTP/1.1
