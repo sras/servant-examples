@@ -37,7 +37,7 @@ type ServantType =  "singleHeader" :> Get '[PlainText] (Headers '[Header "Custom
 
 handlerWithHeader :: Handler (Headers '[Header "CustomHeader" String] String) -- Again, here, instead of `Handler String` (For handler without header), we have changed `String` to (Headers '[Header "CustomHeader" String] String)
 handlerWithHeader = addHeader "CustomHeaderValue" <$> handlerWithoutHeader
--- Note how the "addHeader" function is applied to the response content (ie String, via fmap) intead of the whole handler. It all matches up with how the types was changed.
+-- Note how the "addHeader" function is applied to the response content (ie String, via fmap) instead of the whole handler. It all matches up with how the types was changed.
   where
     handlerWithoutHeader :: Handler String
     handlerWithoutHeader = return "Response Content"
