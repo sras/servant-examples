@@ -26,17 +26,17 @@ import Servant.Server.Experimental.Auth (AuthHandler, AuthServerData, mkAuthHand
 
 data User = User
 
-lookupUser :: Handler User
-lookupUser = return User
+lookupUser :: Request -> Handler User
+lookupUser = undefined -- Actual authenticating function
 
 authHandler :: AuthHandler Request User
-authHandler = undefined
+authHandler = mkAuthHandler lookupUser
 
 handlerName :: User -> Handler String
 handlerName user = return "sras"
 
 handlerAge :: Handler String
-handlerAge = liftIO $ (return "30" :: IO String) -- Using liftIO just to show that we can do arbitrary IO in the Handler
+handlerAge = return "30"
 
 type instance AuthServerData (AuthProtect "Example Auth Realm") = User
 

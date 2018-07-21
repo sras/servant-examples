@@ -47,3 +47,20 @@ app = serve api handlerServer
 
 mainFn :: IO ()
 mainFn = run 4000 app
+
+-- curl -v  http://localhost:4000/person/name
+-- *   Trying 127.0.0.1...
+-- * Connected to localhost (127.0.0.1) port 4000 (#0)
+-- > GET /person/name HTTP/1.1
+-- > Host: localhost:4000
+-- > User-Agent: curl/7.47.0
+-- > Accept: */*
+-- >
+-- < HTTP/1.1 200 OK
+-- < Transfer-Encoding: chunked
+-- < Date: Sat, 21 Jul 2018 17:00:44 GMT
+-- < Server: Warp/3.2.23
+-- < Content-Type: text/plain;charset=utf-8
+-- <
+-- * Connection #0 to host localhost left intact
+-- sras
