@@ -98,7 +98,7 @@ server = handlerName :<|> handlerAge
 -- handlers in the step before). Here too we
 -- can use the :<|> operator to combine handlers.
 -- Only here this is a regular operator, that
--- operate of values.
+-- operate of values, instead of types.
 --
 app :: Application
 app = serve (Proxy :: Proxy ServantType) server
