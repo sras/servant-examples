@@ -36,7 +36,9 @@ data NameWrapper = NameWrapper { getName :: String } -- This the type that our h
 type ServantType =  "name" :> ReqBody '[JSON] NameWrapper :> Post '[PlainText] String
                :<|> "age" :> Get '[PlainText] String
 
--- To make this work, NameWrapper should have an instance of FromJSON
+-- To make this work, NameWrapper should have an instance of FromJSON. This is becasuse the
+-- built in 'Accept' and 'MimeUnrender' instances for 'JSON' type expects FromJSON and ToJSON
+-- instances for the concerned types.
 --
 instance FromJSON NameWrapper where
   parseJSON v = NameWrapper <$> (parseJSON v)

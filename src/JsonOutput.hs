@@ -42,3 +42,20 @@ app = serve (Proxy :: Proxy ServantType) server
 
 mainFn :: IO ()
 mainFn = run 4000 app
+
+-- curl -v http://127.0.0.1:4000/payload
+-- *   Trying 127.0.0.1...
+-- * Connected to 127.0.0.1 (127.0.0.1) port 4000 (#0)
+-- > GET /payload HTTP/1.1
+-- > Host: 127.0.0.1:4000
+-- > User-Agent: curl/7.47.0
+-- > Accept: */*
+-- >
+-- < HTTP/1.1 200 OK
+-- < Transfer-Encoding: chunked
+-- < Date: Sun, 22 Jul 2018 08:57:34 GMT
+-- < Server: Warp/3.2.23
+-- < Content-Type: application/json;charset=utf-8
+-- <
+-- * Connection #0 to host 127.0.0.1 left intact
+-- {"itemTwo":"itemTwo","itemOne":"itemOne"}

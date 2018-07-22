@@ -31,7 +31,6 @@ handlerName user = return "sras"
 handlerAge :: Handler String
 handlerAge = liftIO $ (return "30" :: IO String) -- Using liftIO just to show that we can do arbitrary IO in the Handler
 
-
 type ServantType = BasicAuth "Example Auth Realm" User :> "person" :> "name" :> Get '[PlainText] String
                :<|> "person" :> "age" :> Get '[PlainText] String
 
@@ -42,8 +41,8 @@ myAuthCheck :: BasicAuthData -> IO (BasicAuthResult User)
 myAuthCheck (BasicAuthData u p) = return $ if u == "sras" && p == "sras_password" then Authorized User else BadPassword
 
 -- ^^ The above function is the one that actually check the username
--- and password and return an value that indicate the status of authentication.
--- it can be one of
+-- and password and return an value that indicate the status of authentication. Look in the 'app' function
+-- to see how it is used. The value returned can be one of
 --
 -- Unauthorized
 -- BadPassword

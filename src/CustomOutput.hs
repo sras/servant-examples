@@ -30,24 +30,39 @@ import qualified Data.Text.Lazy.Encoding as TE
 
 data ANewFormat
 
-data Payload = Payload String String -- This is our json payload that we will output from the endpoint.
-
 instance Accept ANewFormat where  -- Accept instance is required for output encoding as well.
   contentType _ = "text/a-new-format"
 
-instance MimeRender ANewFormat Payload where -- This is where the actual encoding happens
-  mimeRender _ (Payload itemOne itemTwo) = TE.encodeUtf8 $ T.pack $ ("ANewFormat" ++ itemOne ++ "--" ++ itemTwo)
+instance MimeRender ANewFormat String where -- This is where the actual encoding happens
+  mimeRender _ s = TE.encodeUtf8 $ T.pack $ ("ANewFormat:" ++ s)
 
-type ServantType =  "payload" :> Get '[ANewFormat] Payload
+type ServantType =  "name" :> Get '[ANewFormat] String
 
-handlerPayload :: Handler Payload
-handlerPayload = return $ Payload "itemOne" "itemTwo"
+handlerName :: Handler String
+handlerName = return $ "sras"
 
 server :: Server ServantType
-server = handlerPayload
+server = handlerName
 
 app :: Application
 app = serve (Proxy :: Proxy ServantType) server
 
 mainFn :: IO ()
 mainFn = run 4000 app
+
+-- $ curl -v  http://localhost:4000/name
+-- *   Trying 127.0.0.1...
+-- * Connected to localhost (127.0.0.1) port 4000 (#0)
+-- > GET /name HTTP/1.1
+-- > Host: localhost:4000
+-- > User-Agent: curl/7.47.0
+-- > Accept: */*
+-- >
+-- < HTTP/1.1 200 OK
+-- < Transfer-Encoding: chunked
+-- < Date: Sun, 22 Jul 2018 07:22:10 GMT
+-- < Server: Warp/3.2.23
+-- < Content-Type: text/a-new-format
+-- <
+-- * Connection #0 to host localhost left intact
+-- ANewFormat:sras
