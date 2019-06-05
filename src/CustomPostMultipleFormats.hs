@@ -5,7 +5,7 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE TypeOperators #-}
 
-module CustomPostFormat where
+module CustomPostMultipleFormats where
 
 import Servant ( QueryParam
                , PlainText

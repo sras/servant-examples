@@ -4,7 +4,7 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeOperators #-}
 
-module HelloWorld where
+module JsonOutput where
 
 import Servant ( QueryParam
                , PlainText

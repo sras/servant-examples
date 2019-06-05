@@ -4,7 +4,7 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeOperators #-}
 
-module HelloWorld where
+module ErrorHandling where
 
 import Servant ( QueryParam
                , PlainText

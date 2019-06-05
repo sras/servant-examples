@@ -5,7 +5,7 @@
 {-# LANGUAGE TypeOperators #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 
-module HelloWorld where
+module CustomOutput where
 
 import Servant ( QueryParam
                , PlainText

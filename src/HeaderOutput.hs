@@ -4,7 +4,7 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeOperators #-}
 
-module HeaderInput where
+module HeaderOutput where
 
 import Servant ( Header
                , PlainText

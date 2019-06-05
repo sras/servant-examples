@@ -4,7 +4,7 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeOperators #-}
 
-module HelloWorld where
+module AnotherMonad where
 
 import Servant ( QueryParam
                , PlainText
@@ -45,8 +45,9 @@ handlerServer = hoistServer api readerToHandler readerServer
 app :: Application
 app = serve api handlerServer
 
-mainFn :: IO ()
-mainFn = run 4000 app
+server :: () -> IO ()
+server _ =
+  run 4000 app
 
 -- curl -v  http://localhost:4000/person/name
 -- *   Trying 127.0.0.1...
