@@ -6,8 +6,7 @@
 
 module AnotherMonad where
 
-import Servant ( QueryParam
-               , PlainText
+import Servant ( PlainText
                , Get
                , ServerT
                , hoistServer -- Servant function to make a custom monad with with Servant.
@@ -16,9 +15,8 @@ import Servant ( QueryParam
                , type (:<|>)
                , (:<|>)(..)
                )
-import Servant.Server (Handler, Server, Application, serve)
+import Servant.Server (Handler, Application, serve)
 import Network.Wai.Handler.Warp (run)
-import Control.Monad.IO.Class (liftIO)
 import Control.Monad.Reader
 
 type MyServerType =  "person" :> "name" :> Get '[PlainText] String  -- The endpoint types does not have to change to accomodate a different monad
@@ -38,16 +36,15 @@ readerServer = handlerName :<|> handlerAge           -- At the next step, we wil
 
 handlerServer :: ServerT MyServerType Handler  -- This code is the important part where we convert a value of type `ServerT MyServerType (Reader String)` to a value of type `ServerT MyServerType Handler`, using the hoistServer function from Servant.
 handlerServer = hoistServer api readerToHandler readerServer
-  where
-    readerToHandler :: Reader String x -> Handler x  -- This code just extracts the value from our custom monads (Reader here) and wraps it in the Handler monad.
-    readerToHandler r = return $ runReader r "reader env"
+ where
+  readerToHandler :: Reader String x -> Handler x  -- This code just extracts the value from our custom monads (Reader here) and wraps it in the Handler monad.
+  readerToHandler r = return $ runReader r "reader env"
 
 app :: Application
 app = serve api handlerServer
 
-server :: () -> IO ()
-server _ =
-  run 4000 app
+mainFn :: IO ()
+mainFn = run 4000 app
 
 -- curl -v  http://localhost:4000/person/name
 -- *   Trying 127.0.0.1...
@@ -55,7 +52,7 @@ server _ =
 -- > GET /person/name HTTP/1.1
 -- > Host: localhost:4000
 -- > User-Agent: curl/7.47.0
--- > Accept: */*
+  -- > Accept: */*
 -- >
 -- < HTTP/1.1 200 OK
 -- < Transfer-Encoding: chunked

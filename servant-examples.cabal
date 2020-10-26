@@ -14,13 +14,18 @@ extra-source-files:  README.md
 cabal-version:       >=1.10
 
 library
+  ghc-options: -Wall
   hs-source-dirs:      src
   exposed-modules:     HelloWorld
                        , HtmlContent
                        , UrlParams
+                       , AnotherMonad
+                       , SwaggerDocGeneration
   build-depends:       base >= 4.7 && < 5
                        , servant
                        , servant-server
+                       , servant-swagger
+                       , swagger2
                        , text
                        , wai
                        , aeson

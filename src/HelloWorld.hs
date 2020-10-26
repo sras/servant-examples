@@ -6,8 +6,7 @@
 
 module HelloWorld where
 
-import Servant ( QueryParam
-               , PlainText
+import Servant ( PlainText
                , Get
                , Proxy(..)
                , type (:>)      -- Syntax for importing type operator
