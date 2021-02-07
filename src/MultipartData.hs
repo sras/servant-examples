@@ -6,8 +6,7 @@
 
 module MultipartData where
 
-import Servant ( QueryParam
-               , PlainText
+import Servant ( PlainText
                , Post
                , Proxy(..)
                , type (:>)      -- Syntax for importing type operator
@@ -16,7 +15,6 @@ import Servant ( QueryParam
                )
 import Servant.Server (Handler, Server, Application, serve)
 import Network.Wai.Handler.Warp (run)
-import Control.Monad.IO.Class (liftIO)
 
 import Servant.Multipart  -- This is the module that contain the multipart handling stuff. It is part of a separate package called 'servant-multipart'
 

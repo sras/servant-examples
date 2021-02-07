@@ -6,18 +6,13 @@
 
 module JsonOutput where
 
-import Servant ( QueryParam
-               , PlainText
-               , Get
+import Servant ( Get
                , JSON
                , Proxy(..)
                , type (:>)      -- Syntax for importing type operator
-               , type (:<|>)
-               , (:<|>)(..)
                )
 import Servant.Server (Handler, Server, Application, serve)
 import Network.Wai.Handler.Warp (run)
-import Control.Monad.IO.Class (liftIO)
 import Data.Aeson (object, ToJSON(..), (.=))
 
 -- In this example we see how to output

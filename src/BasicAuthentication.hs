@@ -6,8 +6,7 @@
 
 module BasicAuthentication where
 
-import Servant ( QueryParam
-               , PlainText
+import Servant ( PlainText
                , BasicAuth
                , BasicAuthCheck(..)
                , BasicAuthData(..)

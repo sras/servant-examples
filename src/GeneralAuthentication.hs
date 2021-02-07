@@ -7,8 +7,7 @@
 
 module GeneralAuthentication where
 
-import Servant ( QueryParam
-               , PlainText
+import Servant ( PlainText
                , AuthProtect
                , Get
                , Context((:.), EmptyContext)
@@ -20,7 +19,6 @@ import Servant ( QueryParam
 import Servant.Server (Handler, Server, Application, serveWithContext)
 import Network.Wai.Handler.Warp (run)
 import Network.Wai (Request)
-import Control.Monad.IO.Class (liftIO)
 
 import Servant.Server.Experimental.Auth (AuthHandler, AuthServerData, mkAuthHandler)
 

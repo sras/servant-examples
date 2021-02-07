@@ -17,7 +17,6 @@ import Servant ( QueryParam
                )
 import Servant.Server (Handler, Server, Application, serve)
 import Network.Wai.Handler.Warp (run)
-import Control.Monad.IO.Class (liftIO)
 
 -- In this example we look at how
 -- we can recieve parameters via 

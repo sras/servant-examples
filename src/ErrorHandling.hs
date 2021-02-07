@@ -6,8 +6,7 @@
 
 module ErrorHandling where
 
-import Servant ( QueryParam
-               , PlainText
+import Servant ( PlainText
                , Get
                , Proxy(..)
                , type (:>)      -- Syntax for importing type operator
@@ -16,8 +15,8 @@ import Servant ( QueryParam
                )
 import Servant.Server (Handler, Server, Application, serve)
 import Network.Wai.Handler.Warp (run)
-import Control.Monad.IO.Class (liftIO)
-import Control.Monad.Error.Class
+import Control.Monad.Error.Class (MonadError(throwError))
+
 
 import Servant.Server.Internal.ServantErr
 -- ^^ This is the module from which the errors that we can throw are imported.

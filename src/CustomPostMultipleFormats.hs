@@ -7,12 +7,10 @@
 
 module CustomPostMultipleFormats where
 
-import Servant ( QueryParam
-               , PlainText
+import Servant ( PlainText
                , JSON
                , MimeUnrender(..)
                , Accept(..)
-               , FromHttpApiData(..)
                , Get
                , Post
                , ReqBody
@@ -23,11 +21,9 @@ import Servant ( QueryParam
                )
 import Servant.Server (Handler, Server, Application, serve)
 import Network.Wai.Handler.Warp (run)
-import Control.Monad.IO.Class (liftIO)
-import Data.Text as T
-import Data.Text.Lazy.Encoding as TE
-import Data.Text.Lazy as TL
-import Data.Aeson (FromJSON(..))
+import Data.Text as T (unpack)
+import Data.Text.Lazy.Encoding as TE (decodeUtf8')
+import Data.Text.Lazy as TL (toStrict)
 
 -- In this example, we see how we can accept data
 -- in multiple formats, including custom ones. 
