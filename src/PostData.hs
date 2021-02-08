@@ -8,7 +8,7 @@ module PostData where
 
 import Servant ( PlainText
                , JSON
-               
+
                , Get
                , Post
                , ReqBody
@@ -23,8 +23,8 @@ import Network.Wai.Handler.Warp (run)
 -- In this example, we see how we can accept
 -- input in the request body, say a Json payload.
 
-handlerName :: String -> Handler String 
-handlerName nameIn = return nameIn  -- Just output back the input string value
+handlerName :: String -> Handler String
+handlerName = return  -- Just output back the input string value
 
 handlerAge :: Handler String
 handlerAge = return "30"

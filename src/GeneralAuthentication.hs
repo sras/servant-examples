@@ -31,7 +31,7 @@ authHandler :: AuthHandler Request User
 authHandler = mkAuthHandler lookupUser
 
 handlerName :: User -> Handler String
-handlerName user = return "sras"
+handlerName _ = return "sras"
 
 handlerAge :: Handler String
 handlerAge = return "30"

@@ -9,7 +9,7 @@ module CustomOutput where
 
 import Servant ( Get
                , MimeRender(..)
-               , Accept(..)               
+               , Accept(..)
                , Proxy(..)
                , type (:>)      -- Syntax for importing type operator
                )
@@ -32,7 +32,7 @@ instance MimeRender ANewFormat String where -- This is where the actual encoding
 type ServantType =  "name" :> Get '[ANewFormat] String
 
 handlerName :: Handler String
-handlerName = return $ "sras"
+handlerName = return "sras"
 
 server :: Server ServantType
 server = handlerName

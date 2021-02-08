@@ -42,12 +42,12 @@ import Network.Wai.Handler.Warp (run)
 --
 
 handlerName :: Maybe String -> Handler String
-handlerName nameIn = case nameIn of 
+handlerName nameIn = case nameIn of
   Just name -> return name
   Nothing -> return "Anonymous"
 
 handlerRequiredName :: String -> Handler String
-handlerRequiredName nameIn = return nameIn
+handlerRequiredName = return
 
 type ServantType =  "name" :> QueryParam "input" String :> Get '[PlainText] String -- /name?input=john
                :<|> "name" :> Capture "input" String :> Get '[PlainText] String -- /name/John

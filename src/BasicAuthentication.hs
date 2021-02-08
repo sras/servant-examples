@@ -25,10 +25,10 @@ import Control.Monad.IO.Class (liftIO)
 data User = User
 
 handlerName :: User -> Handler String
-handlerName user = return "sras"
+handlerName _ = return "sras"
 
 handlerAge :: Handler String
-handlerAge = liftIO $ (return "30" :: IO String) -- Using liftIO just to show that we can do arbitrary IO in the Handler
+handlerAge = liftIO (return "30" :: IO String) -- Using liftIO just to show that we can do arbitrary IO in the Handler
 
 type ServantType = BasicAuth "Example Auth Realm" User :> "person" :> "name" :> Get '[PlainText] String
                :<|> "person" :> "age" :> Get '[PlainText] String
