@@ -47,7 +47,7 @@ handlerName nameIn = case nameIn of
   Nothing -> return "Anonymous"
 
 handlerRequiredName :: String -> Handler String
-handlerRequiredName = return
+handlerRequiredName nameIn = return nameIn
 
 type ServantType =  "name" :> QueryParam "input" String :> Get '[PlainText] String -- /name?input=john
                :<|> "name" :> Capture "input" String :> Get '[PlainText] String -- /name/John

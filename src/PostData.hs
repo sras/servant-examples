@@ -24,7 +24,7 @@ import Network.Wai.Handler.Warp (run)
 -- input in the request body, say a Json payload.
 
 handlerName :: String -> Handler String
-handlerName = return  -- Just output back the input string value
+handlerName nameIn = return nameIn  -- Just output back the input string value
 
 handlerAge :: Handler String
 handlerAge = return "30"

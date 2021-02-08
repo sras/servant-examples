@@ -49,7 +49,7 @@ instance MimeUnrender ANewFormat String where -- This instance implements the de
     Left _ -> Left "Decoding error"
 
 handlerName :: String -> Handler String
-handlerName = return  -- Just output back the input string value
+handlerName nameIn = return nameIn -- Just output back the input string value
 
 server :: Server ServantType
 server = handlerName :<|> handlerName  -- We can use same handler for both endpoints, because they only differ in input encoding.

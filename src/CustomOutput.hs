@@ -27,7 +27,7 @@ instance Accept ANewFormat where  -- Accept instance is required for output enco
   contentType _ = "text/a-new-format"
 
 instance MimeRender ANewFormat String where -- This is where the actual encoding happens
-  mimeRender _ s = TE.encodeUtf8 $ T.pack $ ("ANewFormat:" ++ s)
+  mimeRender _ s = TE.encodeUtf8 $ T.pack ("ANewFormat:" ++ s)
 
 type ServantType =  "name" :> Get '[ANewFormat] String
 
