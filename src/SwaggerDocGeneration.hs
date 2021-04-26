@@ -9,8 +9,7 @@
 
 module SwaggerDocGeneration where
 
-import Servant ( QueryParam
-               , PlainText
+import Servant ( PlainText
                , Get
                , JSON
                , Proxy(..)
@@ -21,8 +20,7 @@ import Servant ( QueryParam
                )
 import Servant.Server (Handler, Server, Application, serve)
 import Network.Wai.Handler.Warp (run)
-import Control.Monad.IO.Class (liftIO)
-import GHC.Generics
+import GHC.Generics (Generic)
 
 import Servant.Swagger (toSwagger)
 import Data.Swagger (Swagger, ToSchema)

@@ -7,9 +7,7 @@
 
 module HtmlContent where
 
-import Servant ( QueryParam
-               , PlainText
-               , Get
+import Servant ( Get
                , Proxy(..)
                , type (:>)      -- Syntax for importing type operator
                , type (:<|>)
@@ -19,8 +17,7 @@ import Servant ( QueryParam
                )
 import Servant.Server (Handler, Server, Application, serve)
 import Network.Wai.Handler.Warp (run)
-import Control.Monad.IO.Class (liftIO)
-import Data.ByteString.Lazy.Char8 as C
+import Data.ByteString.Lazy.Char8 as C (pack)
 
 -- In this example, we add an Html type and make endpoints
 -- with this content type return a content type header with

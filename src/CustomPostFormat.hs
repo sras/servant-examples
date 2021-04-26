@@ -7,13 +7,9 @@
 
 module CustomPostFormat where
 
-import Servant ( QueryParam
-               , PlainText
-               , JSON
+import Servant ( PlainText
                , MimeUnrender(..)
                , Accept(..)
-               , FromHttpApiData(..)
-               , Get
                , Post
                , ReqBody
                , Proxy(..)
@@ -23,11 +19,9 @@ import Servant ( QueryParam
                )
 import Servant.Server (Handler, Server, Application, serve)
 import Network.Wai.Handler.Warp (run)
-import Control.Monad.IO.Class (liftIO)
-import Data.Text as T
-import Data.Text.Lazy.Encoding as TE
-import Data.Text.Lazy as TL
-import Data.Aeson (FromJSON(..))
+import Data.Text as T (unpack)
+import Data.Text.Lazy.Encoding as TE (decodeUtf8')
+import Data.Text.Lazy as TL (toStrict)
 
 -- In this example, we see how we can accept data
 -- in any custom format. Earlier example, we were accepting
@@ -54,8 +48,8 @@ instance MimeUnrender ANewFormat String where -- This instance implements the de
     Right x -> Right $ ("Decoded from ANewFormat - " ++ (T.unpack $ TL.toStrict x)) -- We just prefix the decoded text to differentiate it to show this was decoded using ANewFormat decoding logic.
     Left _ -> Left "Decoding error"
 
-handlerName :: String -> Handler String 
-handlerName nameIn = return nameIn  -- Just output back the input string value
+handlerName :: String -> Handler String
+handlerName nameIn = return nameIn -- Just output back the input string value
 
 server :: Server ServantType
 server = handlerName :<|> handlerName  -- We can use same handler for both endpoints, because they only differ in input encoding.

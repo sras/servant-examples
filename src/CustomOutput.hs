@@ -7,23 +7,16 @@
 
 module CustomOutput where
 
-import Servant ( QueryParam
-               , PlainText
-               , Get
+import Servant ( Get
                , MimeRender(..)
                , Accept(..)
-               , JSON
                , Proxy(..)
                , type (:>)      -- Syntax for importing type operator
-               , type (:<|>)
-               , (:<|>)(..)
                )
 import Servant.Server (Handler, Server, Application, serve)
 import Network.Wai.Handler.Warp (run)
-import Control.Monad.IO.Class (liftIO)
-import Data.Aeson (object, ToJSON(..), (.=))
-import qualified Data.Text.Lazy as T
-import qualified Data.Text.Lazy.Encoding as TE
+import qualified Data.Text.Lazy as T (pack)
+import qualified Data.Text.Lazy.Encoding as TE (encodeUtf8)
 
 -- In this example we see how to output
 -- data using a custom encoding.
@@ -34,12 +27,12 @@ instance Accept ANewFormat where  -- Accept instance is required for output enco
   contentType _ = "text/a-new-format"
 
 instance MimeRender ANewFormat String where -- This is where the actual encoding happens
-  mimeRender _ s = TE.encodeUtf8 $ T.pack $ ("ANewFormat:" ++ s)
+  mimeRender _ s = TE.encodeUtf8 $ T.pack ("ANewFormat:" ++ s)
 
 type ServantType =  "name" :> Get '[ANewFormat] String
 
 handlerName :: Handler String
-handlerName = return $ "sras"
+handlerName = return "sras"
 
 server :: Server ServantType
 server = handlerName

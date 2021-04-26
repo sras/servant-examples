@@ -17,7 +17,7 @@ import Servant ( PlainText
                )
 import Servant.Server (Handler, Application, serve)
 import Network.Wai.Handler.Warp (run)
-import Control.Monad.Reader
+import Control.Monad.Reader (runReader, Reader)
 
 type MyServerType =  "person" :> "name" :> Get '[PlainText] String  -- The endpoint types does not have to change to accomodate a different monad
                :<|> "person" :> "age" :> Get '[PlainText] String

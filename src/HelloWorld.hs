@@ -32,7 +32,7 @@ handlerName :: Handler String
 handlerName = return "sras"
 
 handlerAge :: Handler String
-handlerAge = liftIO $ (return "30" :: IO String) -- Using liftIO just to show that we can do arbitrary IO in the Handler
+handlerAge = liftIO (return "30" :: IO String) -- Using liftIO just to show that we can do arbitrary IO in the Handler
 
 -- The handler functions for Servant should run in a 'Handler'
 -- monad, which is something that is part of the Servant

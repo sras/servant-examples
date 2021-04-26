@@ -6,10 +6,8 @@
 
 module CustomPostData where
 
-import Servant ( QueryParam
-               , PlainText
+import Servant ( PlainText
                , JSON
-               , FromHttpApiData(..)
                , Get
                , Post
                , ReqBody
@@ -20,8 +18,6 @@ import Servant ( QueryParam
                )
 import Servant.Server (Handler, Server, Application, serve)
 import Network.Wai.Handler.Warp (run)
-import Control.Monad.IO.Class (liftIO)
-import Data.Text as T
 import Data.Aeson (FromJSON(..))
 
 -- In this example, we see how we can recive data in the request

@@ -19,7 +19,6 @@ import Servant ( Header
                )
 import Servant.Server (Handler, Server, Application, serve)
 import Network.Wai.Handler.Warp (run)
-import Control.Monad.IO.Class (liftIO)
 
 -- In this example we see how we can add a header to the response.
 -- Look at the first endpoint type below. The types to denote the Header gets

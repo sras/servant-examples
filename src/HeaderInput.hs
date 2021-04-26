@@ -11,12 +11,9 @@ import Servant ( Header
                , Get
                , Proxy(..)
                , type (:>)      -- Syntax for importing type operator
-               , type (:<|>)
-               , (:<|>)(..)
                )
 import Servant.Server (Handler, Server, Application, serve)
 import Network.Wai.Handler.Warp (run)
-import Control.Monad.IO.Class (liftIO)
 
 type ServantType =  "name" :> Header "CustomHeader" String :> Get '[PlainText] String
 
